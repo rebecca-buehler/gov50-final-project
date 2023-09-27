@@ -1,7 +1,7 @@
 ---
 title: "Gov 50 Final Project"
-author: "Your Name Here"
-description: "My final project"
+author: "Rebecca Buehler"
+description: "The Prevalence of "Women and Children First" in Humanitarian Media"
 output:
   distill::distill_article:
     self_contained: false
@@ -11,4 +11,6 @@ output:
 
 ## Project thoughts
 
-I am interested in exploring data related to...
+I am planning to create a data visualization for my senior thesis. My thesis is an investigation of gender essentialisms in humanitarian media, or our tendency to portray civilian women as vulnerable victims and civilian men as violent perpetrators. These essentialisms persist even though innocent men and boys (noncombatants) are twice as likely to die as a result of violent conflict. I will critique the "women and children first" narrative as it appears explicitly in text and implicitly in imagery. I will do this by identifying the gap between reality (the proportion of civilian victims that are male) and representation (the proportion of humanitarian media that centers male vulnerability and victimization). The central case study of my thesis is the conflict and humanitarian crisis in the Tigray region of Ethiopia. 
+
+I would like to use this project to create a data visualization for a portion of the data that I will collect this semester. Ideally, I would like to represent the gap between representation and reality. I already have some gender-disaggregated data on victimzation from ACLED. I will be coding text and imagery from UN agencies and international NGOs to gather representation data in the coming months. If I do not have sufficient data on representation by Milestone 3, I will only create a visualization with the ACLED data. 
