@@ -1,7 +1,7 @@
 ---
 title: "Gov 50 Final Project"
 author: "Rebecca Buehler"
-description: "The Prevalence of "Women and Children First" in Humanitarian Media"
+description: "The Prevalence of 'Women and Children First' in Humanitarian Media"
 output:
   distill::distill_article:
     self_contained: false
