@@ -65,7 +65,7 @@ civilian_violence_plot <- civilian_violence |>
   labs(
     x = "Year",
     y = "Casualties per Month",
-    title = "Civilian Casualties Since the Start of the Tigray War")
+    title = "Civilian Casualities in the Tigray War from November 2020 to Present")
 civilian_violence_plot
 ```
 
