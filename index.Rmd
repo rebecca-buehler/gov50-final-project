@@ -31,6 +31,8 @@ My variables of interest are type of violence and civilian group targeted. My ou
 
 ## First data visualization
 
+In my final visualization, I plan to superimpose a graph of fatalities from events that targeted women specifically over this graph of all civilian fatalities. I have not been able to do this yet because I needed to create a new variable in the dataset for events that targeted women. I am waiting to hear back from the Ethiopian Peace Observatory about their codebook before making this variable.
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(readxl)
@@ -68,4 +70,4 @@ civilian_violence_plot <- civilian_violence |>
     title = "Civilian Casualities in the Tigray War from November 2020 to Present")
 civilian_violence_plot
 ```
-In my final visualization, I plan to superimpose a graph of fatalities from events that targeted women specifically over this graph of all civilian fatalities. I have not been able to do this yet because I needed to create a new variable in the dataset for events that targeted women. I am waiting to hear back from the Ethiopian Peace Observatory about their codebook before making this variable.
+
