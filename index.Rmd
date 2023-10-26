@@ -29,4 +29,43 @@ Additionally, I hypothesize that based on the estimates of Ormhaug et al., male 
 
 My variables of interest are type of violence and civilian group targeted. My outcome of interest in the number of fatalities. I am waiting to hear back from ACLED for a codebook for this data set. 
 
+## First data visualization
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(ggplot2)
+library(anytime)
+library(lubridate)
+```
+
+```{r}
+Ethiopia_1997_2023_Sep22 <- read_excel("~/Documents/Thesis/Data/ACLED/Ethiopia_1997-2023_Sep22.xlsx")
+
+civilian_violence <- Ethiopia_1997_2023_Sep22 |>
+  filter(CIVILIAN_TARGETING == "Civilian targeting", EVENT_DATE >= "2020-11-03")
+sum(civilian_violence$FATALITIES)
+
+civilian_violence <- civilian_violence |>
+  mutate(month = format(as.Date(EVENT_DATE, "%Y-%m-%d"), "%Y-%m"),
+         year = format(as.Date(EVENT_DATE, "%Y-%m-%d"), "%Y"))
+
+civilian_violence_plot <- civilian_violence |>
+  group_by(month) |>
+  mutate(fatalities_per_month = sum(FATALITIES)) |> 
+  ggplot() +
+  facet_grid(~year, scales="free", space = "free_x", switch = "x") +
+  geom_col(mapping = aes(x = month, y = fatalities_per_month), 
+           fill = "darkslateblue") +
+  theme(axis.text.x = element_blank(), 
+        panel.spacing = unit(0.05, "lines"),
+        strip.placement = "outside") +
+  labs(
+    x = "Year",
+    y = "Casualties per Month",
+    title = "Civilian Casualties Since the Start of the Tigray War")
+civilian_violence_plot
+```
 

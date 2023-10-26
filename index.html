@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_copy.pdf","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-1-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1530,7 +1530,40 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>I hypothesize that the proportion of lethal violence that specifically targets women will be smaller than the proportion of lethal violence that targets civilians in general. Existing literature demonstrates that female civilians suffer disproportionately from conflict-related sexual violence, while male civilians suffer disproportionately from all other forms of conflict-related violence. This data set distinguishes between event and sub-event type, with sexual violence as a category. Therefore, I estimate that the majority of events where women were targeted will be coded as sexual violence.</p>
 <p>Additionally, I hypothesize that based on the estimates of Ormhaug et al., male civilians will be disproportionately affected by lethal violence in Tigray.The existing literature on gendered victimization in conflict contexts demonstrates that male civilians are twice as likely to die as female civilians (Ormhaug et al.). Using this estimate, I hypothesize that the proportion of civilian casualities, and subsequently the estimated proportion of those that are men, will be greater than the number of women targeted by lethal violence.</p>
 <p>My variables of interest are type of violence and civilian group targeted. My outcome of interest in the number of fatalities. I am waiting to hear back from ACLED for a codebook for this data set.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="first-data-visualization">First data visualization</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>Ethiopia_1997_2023_Sep22</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readxl.tidyverse.org/reference/read_excel.html'>read_excel</a></span><span class='op'>(</span><span class='st'>"~/Documents/Thesis/Data/ACLED/Ethiopia_1997-2023_Sep22.xlsx"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>civilian_violence</span> <span class='op'>&lt;-</span> <span class='va'>Ethiopia_1997_2023_Sep22</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>CIVILIAN_TARGETING</span> <span class='op'>==</span> <span class='st'>"Civilian targeting"</span>, <span class='va'>EVENT_DATE</span> <span class='op'>&gt;=</span> <span class='st'>"2020-11-03"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>civilian_violence</span><span class='op'>$</span><span class='va'>FATALITIES</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>[1] 9101</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>civilian_violence</span> <span class='op'>&lt;-</span> <span class='va'>civilian_violence</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>month <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='va'>EVENT_DATE</span>, <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>, <span class='st'>"%Y-%m"</span><span class='op'>)</span>,</span>
+<span>         year <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='va'>EVENT_DATE</span>, <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>, <span class='st'>"%Y"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>civilian_violence_plot</span> <span class='op'>&lt;-</span> <span class='va'>civilian_violence</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>month</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>fatalities_per_month <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>FATALITIES</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>facet_grid</a></span><span class='op'>(</span><span class='op'>~</span><span class='va'>year</span>, scales<span class='op'>=</span><span class='st'>"free"</span>, space <span class='op'>=</span> <span class='st'>"free_x"</span>, switch <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month</span>, y <span class='op'>=</span> <span class='va'>fatalities_per_month</span><span class='op'>)</span>, </span>
+<span>           fill <span class='op'>=</span> <span class='st'>"darkslateblue"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span>, </span>
+<span>        panel.spacing <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.05</span>, <span class='st'>"lines"</span><span class='op'>)</span>,</span>
+<span>        strip.placement <span class='op'>=</span> <span class='st'>"outside"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
+<span>    x <span class='op'>=</span> <span class='st'>"Year"</span>,</span>
+<span>    y <span class='op'>=</span> <span class='st'>"Casualties per Month"</span>,</span>
+<span>    title <span class='op'>=</span> <span class='st'>"Civilian Casualties Since the Start of the Tigray War"</span><span class='op'>)</span></span>
+<span><span class='va'>civilian_violence_plot</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-1-1.png" width="624" /></p>
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
