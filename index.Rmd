@@ -44,11 +44,20 @@ library(lubridate)
 ```
 
 ```{r}
-Ethiopia_1997_2023_Sep22 <- read_excel("~/Documents/Thesis/Data/ACLED/Ethiopia_1997-2023_Sep22.xlsx")
+Ethiopia_1997_2023_Sep22 <- read_excel("~/Documents/Thesis/Data/ACLED/Ethiopia_1997-2023_Sep22.xlsx") 
 
 civilian_violence <- Ethiopia_1997_2023_Sep22 |>
-  filter(CIVILIAN_TARGETING == "Civilian targeting", EVENT_DATE >= "2020-11-03")
+  filter(CIVILIAN_TARGETING == "Civilian targeting", EVENT_DATE >= "2020-11-03") 
 sum(civilian_violence$FATALITIES)
+
+women_violence <- Ethiopia_1997_2023_Sep22 |>
+  filter(EVENT_DATE >= "2020-11-03") |>
+  mutate(
+    WOMEN = ifelse(grepl("Women", ASSOC_ACTOR_2) == TRUE, 1, 0),
+    month = format(as.Date(EVENT_DATE, "%Y-%m-%d"), "%Y-%m"),
+    year = format(as.Date(EVENT_DATE, "%Y-%m-%d"), "%Y"))
+
+sum(women_violence$FATALITIES)
 
 civilian_violence <- civilian_violence |>
   mutate(month = format(as.Date(EVENT_DATE, "%Y-%m-%d"), "%Y-%m"),
@@ -69,5 +78,27 @@ civilian_violence_plot <- civilian_violence |>
     y = "Casualties per Month",
     title = "Civilian Casualities in the Tigray War from November 2020 to Present")
 civilian_violence_plot
+
+civilian_violence_plot <- women_violence |>
+  group_by(month) |>
+  mutate(
+    fatalities_per_month = sum(FATALITIES)) |> 
+  filter(WOMEN == 1) |>
+  mutate(
+    women_fatalities_per_month = sum(FATALITIES)
+  ) |>
+  ggplot() +
+  facet_grid(~year, scales="free", space = "free_x", switch = "x") +
+  geom_col(mapping = aes(x = month, y = fatalities_per_month), 
+           fill = "darkslateblue") +
+  geom_col(mapping = aes(x = month, y = women_fatalities_per_month), 
+           fill = "pink") +
+  theme(axis.text.x = element_blank(), 
+        panel.spacing = unit(0.05, "lines"),
+        strip.placement = "outside") +
+  labs(
+    x = "Year",
+    y = "Casualties per Month",
+    title = "Civilian Casualities in the Tigray War from November 2020 to Present")
 ```
 
