@@ -1,19 +1,17 @@
 ---
 title: "Gov 50 Final Project"
 author: "Rebecca Buehler"
-description: "The Prevalence of 'Women and Children First' in Humanitarian Media"
+description: "A Gender-Based Analysis of Violence in the Tigray War"
 output:
   distill::distill_article:
     self_contained: false
 ---
 
-
-
 ## Project thoughts
 
-I am planning to create a data visualization for my senior thesis. My thesis is an investigation of gender essentialisms in humanitarian media, or our tendency to portray civilian women as vulnerable victims and civilian men as violent perpetrators. These essentialisms are prevalent even though innocent men and boys (noncombatants) are twice as likely to die as a result of violent conflict. I will critique the "women and children first" narrative as it appears explicitly in text and implicitly in imagery. I will do this by identifying the gap between reality (the proportion of civilian victims that are male) and representation (the proportion of humanitarian media that centers male vulnerability and victimization). The central case study of my thesis is the conflict and humanitarian crisis in the Tigray region of Ethiopia. 
+I am planning to create a data visualization for my senior thesis. My thesis is an investigation of gender essentialisms in humanitarian media, or our tendency to portray civilian women as vulnerable victims and civilian men as violent perpetrators. These essentialisms are prevalent even though innocent men and boys (noncombatants) are twice as likely to die as a result of violent conflict. In my thesis, I will critique the "women and children first" narrative as it appears explicitly in text and implicitly in imagery. I will do this by identifying the gap between reality (the proportion of civilian victims that are male) and representation (the proportion of humanitarian media that centers male vulnerability and victimization). The central case study of my thesis is the conflict and humanitarian crisis in the Tigray region of Ethiopia. 
 
-I would like to use this project to create a data visualization for a portion of the data that I will collect this semester. Ideally, I would like to represent the gap between representation and reality. I already have some gender-disaggregated data on victimization from ACLED. I will be coding text and imagery from UN agencies and international NGOs to gather representation data in the coming months. If I do not have sufficient data on representation by Milestone 3, I will only create a visualization with the ACLED data. 
+I would like to use this project to create a data visualization that reflects the reality of the violence in Tigray. I will then compare this analysis to my analysis of the media representation of the violence in tigray. Ultimately, I would like to visualize the gap between representation and reality. 
 
 ## Research proposal
 
@@ -25,13 +23,13 @@ Gender disaggregated casualty data from the war in Tigray is not available. The 
 
 I hypothesize that the proportion of lethal violence that specifically targets women will be smaller than the proportion of lethal violence that targets civilians in general. Existing literature demonstrates that female civilians suffer disproportionately from conflict-related sexual violence, while male civilians suffer disproportionately from all other forms of conflict-related violence. This data set distinguishes between event and sub-event type, with sexual violence as a category. Therefore, I estimate that the majority of events where women were targeted will be coded as sexual violence. 
 
-Additionally, I hypothesize that based on the estimates of Ormhaug et al., male civilians will be disproportionately affected by lethal violence in Tigray.The existing literature on gendered victimization in conflict contexts demonstrates that male civilians are twice as likely to die as female civilians (Ormhaug et al.). Using this estimate, I hypothesize that the proportion of civilian casualities, and subsequently the estimated proportion of those that are men, will be greater than the number of women targeted by lethal violence. 
+Additionally, I hypothesize that based on the estimates of Ormhaug et al., male civilians will be disproportionately affected by lethal violence in Tigray.The existing literature on gendered victimization in conflict contexts demonstrates that male civilians are twice as likely to die as female civilians (Ormhaug et al.). Using this estimate, I hypothesize that the number of civilian casualities, and subsequently the estimated proportion of those that are men, will be greater than the number of casualties from events specifically targeting women, such as sexual violence. 
 
-My variables of interest are type of violence and civilian group targeted. My outcome of interest in the number of fatalities. I am waiting to hear back from ACLED for a codebook for this data set. 
+My variables of interest are type of violence and civilian group targeted. My outcome of interest in the number of fatalities. 
 
 ## First data visualization
 
-In my final visualization, I plan to superimpose a graph of fatalities from events that targeted women specifically over this graph of all civilian fatalities. I have not been able to do this yet because I needed to create a new variable in the dataset for events that targeted women. I am waiting to hear back from the Ethiopian Peace Observatory about their codebook before making this variable.
+In my final visualization, I plan to superimpose a graph of fatalities from events that targeted women specifically over this graph of all civilian fatalities. 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
