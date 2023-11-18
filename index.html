@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-1-1.png","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-1-1.png","index_files/figure-html5/unnamed-chunk-2-1.png","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1531,98 +1531,18 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>Additionally, I hypothesize that based on the estimates of Ormhaug et al., male civilians will be disproportionately affected by lethal violence in Tigray.The existing literature on gendered victimization in conflict contexts demonstrates that male civilians are twice as likely to die as female civilians (Ormhaug et al.). Using this estimate, I hypothesize that the number of civilian casualities, and subsequently the estimated proportion of those that are men, will be greater than the number of casualties from events specifically targeting women, such as sexual violence.</p>
 <p>My variables of interest are type of violence and civilian group targeted. My outcome of interest in the number of fatalities.</p>
 <h2 id="results-from-one-analysis">Results from one analysis</h2>
-<h2 id="first-data-visualization">First data visualization</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ethiopia</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readxl.tidyverse.org/reference/read_excel.html'>read_excel</a></span><span class='op'>(</span><span class='st'>"~/Documents/Thesis/Data/ACLED/Ethiopia_1997-2023_Sep22.xlsx"</span><span class='op'>)</span> </span></code></pre>
-</div>
-</div>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>tigray_war</span> <span class='op'>&lt;-</span> <span class='va'>ethiopia</span> <span class='op'>|&gt;</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ethiopia</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readxl.tidyverse.org/reference/read_excel.html'>read_excel</a></span><span class='op'>(</span><span class='st'>"~/Documents/Thesis/Data/ACLED/Ethiopia_1997-2023_Sep22.xlsx"</span><span class='op'>)</span> </span>
+<span></span>
+<span><span class='va'>tigray_war</span> <span class='op'>&lt;-</span> <span class='va'>ethiopia</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>EVENT_DATE</span> <span class='op'>&gt;=</span> <span class='st'>"2020-11-03"</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='va'>tigray_war</span><span class='op'>$</span><span class='va'>EVENT_TYPE</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>tigray_war</span><span class='op'>$</span><span class='va'>EVENT_TYPE</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>tigray_war</span><span class='op'>$</span><span class='va'>EVENT_TYPE</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
-</div>
-<pre><code>                   Battles Explosions/Remote violence 
-                      2452                        239 
-                  Protests                      Riots 
-                       464                        104 
-    Strategic developments Violence against civilians 
-                       429                       1209 </code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>model1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>FATALITIES</span> <span class='op'>~</span> <span class='va'>EVENT_TYPE</span>, data <span class='op'>=</span> <span class='va'>tigray_war</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>model1</span><span class='op'>)</span></span></code></pre>
-</div>
-<pre><code>
-Call:
-lm(formula = FATALITIES ~ EVENT_TYPE, data = tigray_war)
-
-Residuals:
-   Min     1Q Median     3Q    Max 
- -6.65  -4.79  -2.79   0.00 593.35 
-
-Coefficients:
-                                     Estimate Std. Error t value
-(Intercept)                            4.7920     0.3392  14.127
-EVENT_TYPEExplosions/Remote violence   1.2373     1.1382   1.087
-EVENT_TYPEProtests                    -4.6972     0.8504  -5.524
-EVENT_TYPERiots                       -3.6670     1.6817  -2.181
-EVENT_TYPEStrategic developments      -4.7920     0.8791  -5.451
-EVENT_TYPEViolence against civilians   1.8573     0.5903   3.146
-                                     Pr(&gt;|t|)    
-(Intercept)                           &lt; 2e-16 ***
-EVENT_TYPEExplosions/Remote violence  0.27709    
-EVENT_TYPEProtests                   3.49e-08 ***
-EVENT_TYPERiots                       0.02926 *  
-EVENT_TYPEStrategic developments     5.25e-08 ***
-EVENT_TYPEViolence against civilians  0.00166 ** 
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Residual standard error: 16.8 on 4891 degrees of freedom
-Multiple R-squared:  0.01789,   Adjusted R-squared:  0.01689 
-F-statistic: 17.82 on 5 and 4891 DF,  p-value: &lt; 2.2e-16</code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>model2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>FATALITIES</span> <span class='op'>~</span> <span class='va'>EVENT_TYPE</span> <span class='op'>+</span> <span class='va'>YEAR</span>, data <span class='op'>=</span> <span class='va'>tigray_war</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>model2</span><span class='op'>)</span></span></code></pre>
-</div>
-<pre><code>
-Call:
-lm(formula = FATALITIES ~ EVENT_TYPE + YEAR, data = tigray_war)
-
-Residuals:
-   Min     1Q Median     3Q    Max 
- -9.05  -5.50  -2.50   0.21 590.95 
-
-Coefficients:
-                                      Estimate Std. Error t value
-(Intercept)                          2746.8794   548.1047   5.012
-EVENT_TYPEExplosions/Remote violence    1.2415     1.1355   1.093
-EVENT_TYPEProtests                     -4.2299     0.8534  -4.956
-EVENT_TYPERiots                        -2.5910     1.6913  -1.532
-EVENT_TYPEStrategic developments       -4.2128     0.8845  -4.763
-EVENT_TYPEViolence against civilians    2.1898     0.5926   3.695
-YEAR                                   -1.3564     0.2711  -5.003
-                                     Pr(&gt;|t|)    
-(Intercept)                          5.59e-07 ***
-EVENT_TYPEExplosions/Remote violence 0.274263    
-EVENT_TYPEProtests                   7.42e-07 ***
-EVENT_TYPERiots                      0.125593    
-EVENT_TYPEStrategic developments     1.96e-06 ***
-EVENT_TYPEViolence against civilians 0.000222 ***
-YEAR                                 5.85e-07 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Residual standard error: 16.76 on 4890 degrees of freedom
-Multiple R-squared:  0.0229,    Adjusted R-squared:  0.0217 
-F-statistic:  19.1 on 6 and 4890 DF,  p-value: &lt; 2.2e-16</code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>models</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>model1</span>, <span class='va'>model2</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='fu'><a href='https://rdrr.io/pkg/stargazer/man/stargazer.html'>stargazer</a></span><span class='op'>(</span><span class='va'>models</span>, </span>
+<span><span class='va'>model1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>FATALITIES</span> <span class='op'>~</span> <span class='va'>EVENT_TYPE</span> <span class='op'>+</span> <span class='va'>YEAR</span>, data <span class='op'>=</span> <span class='va'>tigray_war</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/stargazer/man/stargazer.html'>stargazer</a></span><span class='op'>(</span><span class='va'>model1</span>, </span>
 <span>          title <span class='op'>=</span> <span class='st'>"Event Type's Effect on Fatality Count"</span>, </span>
 <span>          type <span class='op'>=</span> <span class='st'>"text"</span>,</span>
 <span>          covariate.labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Explosions/Remote Violence"</span>, <span class='st'>"Protests"</span>,</span>
@@ -1632,42 +1552,44 @@ F-statistic:  19.1 on 6 and 4890 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <pre><code>
 Event Type&#39;s Effect on Fatality Count
-============================================================================
-                                          Dependent variable:               
-                           -------------------------------------------------
-                                              Fatalities                    
-                                     (1)                      (2)           
-----------------------------------------------------------------------------
-Explosions/Remote Violence          1.237                    1.242          
-                                   (1.138)                  (1.135)         
-                                                                            
-Protests                          -4.697***                -4.230***        
-                                   (0.850)                  (0.853)         
-                                                                            
-Riots                              -3.667**                  -2.591         
-                                   (1.682)                  (1.691)         
-                                                                            
-Strategic Developments            -4.792***                -4.213***        
-                                   (0.879)                  (0.885)         
-                                                                            
-Violence Against Civilians         1.857***                 2.190***        
-                                   (0.590)                  (0.593)         
-                                                                            
-Year                                                       -1.356***        
-                                                            (0.271)         
-                                                                            
-Capital                            4.792***               2,746.879***      
-                                   (0.339)                 (548.105)        
-                                                                            
-----------------------------------------------------------------------------
-Observations                        4,897                    4,897          
-R2                                  0.018                    0.023          
-Adjusted R2                         0.017                    0.022          
-Residual Std. Error           16.797 (df = 4891)       16.756 (df = 4890)   
-F Statistic                17.823*** (df = 5; 4891) 19.097*** (df = 6; 4890)
-============================================================================
-Note:                                            *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+======================================================
+                               Dependent variable:    
+                           ---------------------------
+                                   Fatalities         
+------------------------------------------------------
+Explosions/Remote Violence            1.242           
+                                     (1.135)          
+                                                      
+Protests                            -4.230***         
+                                     (0.853)          
+                                                      
+Riots                                -2.591           
+                                     (1.691)          
+                                                      
+Strategic Developments              -4.213***         
+                                     (0.885)          
+                                                      
+Violence Against Civilians          2.190***          
+                                     (0.593)          
+                                                      
+Year                                -1.356***         
+                                     (0.271)          
+                                                      
+Capital                           2,746.879***        
+                                    (548.105)         
+                                                      
+------------------------------------------------------
+Observations                          4,897           
+R2                                    0.023           
+Adjusted R2                           0.022           
+Residual Std. Error            16.756 (df = 4890)     
+F Statistic                 19.097*** (df = 6; 4890)  
+======================================================
+Note:                      *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 </div>
+<p>This analysis looks at the effect of event type (Battles, Explosions/Remote Violence, Protests, Riots, Strategic Developments, Civilian Violence) and year of the conflict (2020-2023) on the number of fatalities. Sub-events categorized as Civilian Violence include attacks, sexual violence, and abductions/forced disappearances. This analysis includes data from 4,901 events between the start of the Tigray War on November 3, 2020 and September 21, 2023. This data was collected by the Armed Conflict Location &amp; Event Data (ACLED) project and published by the Ethiopia Peace Observatory.</p>
+<p>A regression of event type on fatalities with “Battles” as the baseline event type shows that violence against civilians has an associated increase in fatalities of 2.1898. One would expect roughly 2 more people to die in a given event targeting civilians than in a battle. The standard error is 0.5926, and these results are statistically significant.</p>
+<h2 id="first-data-visualization">First data visualization</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>civilian_violence</span> <span class='op'>&lt;-</span> <span class='va'>ethiopia</span> <span class='op'>|&gt;</span></span>
@@ -1701,24 +1623,23 @@ Note:                                            *p&lt;0.1; **p&lt;0.05; ***p&lt
 <span>  <span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>facet_grid</a></span><span class='op'>(</span><span class='op'>~</span><span class='va'>year</span>, scales<span class='op'>=</span><span class='st'>"free"</span>, space <span class='op'>=</span> <span class='st'>"free_x"</span>, switch <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month</span>, y <span class='op'>=</span> <span class='va'>fatalities_per_month</span>, color <span class='op'>=</span> <span class='st'>'Civilian fatalities'</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month</span>, y <span class='op'>=</span> <span class='va'>women_fatalities_per_month</span>, color <span class='op'>=</span> <span class='st'>'Women fatalities'</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month</span>, y <span class='op'>=</span> <span class='va'>fatalities_per_month</span>, fill <span class='op'>=</span> <span class='st'>'Civilian fatalities'</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month</span>, y <span class='op'>=</span> <span class='va'>women_fatalities_per_month</span>, fill <span class='op'>=</span> <span class='st'>'Women fatalities'</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span>, </span>
 <span>        panel.spacing <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.05</span>, <span class='st'>"lines"</span><span class='op'>)</span>,</span>
 <span>        strip.placement <span class='op'>=</span> <span class='st'>"outside"</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
 <span>    x <span class='op'>=</span> <span class='st'>"Year"</span>,</span>
-<span>    y <span class='op'>=</span> <span class='st'>"Casualties per Month"</span>,</span>
+<span>    y <span class='op'>=</span> <span class='st'>"Fatalities per Month"</span>,</span>
 <span>    title <span class='op'>=</span> <span class='st'>"Civilian Casualities in the Tigray War from November 2020 to Present"</span></span>
 <span>    <span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_color_manual</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>'Fatalities'</span>,</span>
-<span>                     breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Civilian fatalities'</span>, <span class='st'>'Women fatalities'</span><span class='op'>)</span>,</span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>'Fatalities'</span>,</span>
 <span>                     values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Civilian fatalities'</span><span class='op'>=</span><span class='st'>'darkslateblue'</span>, <span class='st'>'Women fatalities'</span><span class='op'>=</span> <span class='st'>'pink'</span><span class='op'>)</span><span class='op'>)</span></span>
 <span><span class='va'>civilian_violence_plot</span></span></code></pre>
 </div>
-<p><img src="index_files/figure-html5/unnamed-chunk-3-1.png" width="624" /></p>
+<p><img src="index_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
