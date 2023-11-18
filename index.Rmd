@@ -27,28 +27,50 @@ Additionally, I hypothesize that based on the estimates of Ormhaug et al., male 
 
 My variables of interest are type of violence and civilian group targeted. My outcome of interest in the number of fatalities. 
 
-## First data visualization
-
-In my final visualization, I plan to superimpose a graph of fatalities from events that targeted women specifically over this graph of all civilian fatalities. 
+## Results from one analysis
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(readxl)
 library(ggplot2)
 library(dplyr)
-library(ggplot2)
+library(stargazer)
 library(anytime)
 library(lubridate)
+library(arm)
 ```
 
 ```{r}
-Ethiopia_1997_2023_Sep22 <- read_excel("~/Documents/Thesis/Data/ACLED/Ethiopia_1997-2023_Sep22.xlsx") 
+ethiopia <- read_excel("~/Documents/Thesis/Data/ACLED/Ethiopia_1997-2023_Sep22.xlsx") 
 
-civilian_violence <- Ethiopia_1997_2023_Sep22 |>
+tigray_war <- ethiopia |>
+  filter(EVENT_DATE >= "2020-11-03")
+
+tigray_war$EVENT_TYPE <- as.factor(tigray_war$EVENT_TYPE)
+
+model1 <- lm(FATALITIES ~ EVENT_TYPE + YEAR, data = tigray_war)
+
+stargazer(model1, 
+          title = "Event Type's Effect on Fatality Count", 
+          type = "text",
+          covariate.labels = c("Explosions/Remote Violence", "Protests",
+                               "Riots","Strategic Developments","Violence Against Civilians",
+                               "Year","Capital","Constant"),
+          dep.var.labels = "Fatalities")
+```
+
+This analysis looks at the effect of event type (Battles, Explosions/Remote Violence, Protests, Riots, Strategic Developments, Civilian Violence) and year of the conflict (2020-2023) on the number of fatalities. Sub-events categorized as Civilian Violence include attacks, sexual violence, and abductions/forced disappearances. This analysis includes data from 4,901 events between the start of the Tigray War on November 3, 2020 and September 21, 2023. This data was collected by the Armed Conflict Location & Event Data (ACLED) project and published by the Ethiopia Peace Observatory.
+
+A regression of event type on fatalities with “Battles” as the baseline event type shows that violence against civilians has an associated increase in fatalities of 2.1898. One would expect roughly 2 more people to die in a given event targeting civilians than in a battle. The standard error is 0.5926, and these results are statistically significant.
+
+## First data visualization
+
+```{r}
+civilian_violence <- ethiopia |>
   filter(CIVILIAN_TARGETING == "Civilian targeting", EVENT_DATE >= "2020-11-03") 
 sum(civilian_violence$FATALITIES)
 
-women_violence <- Ethiopia_1997_2023_Sep22 |>
+women_violence <- ethiopia |>
   filter(EVENT_DATE >= "2020-11-03") |>
   mutate(
     WOMEN = ifelse(grepl("Women", ASSOC_ACTOR_2) == TRUE, 1, 0),
@@ -61,22 +83,6 @@ civilian_violence <- civilian_violence |>
   mutate(month = format(as.Date(EVENT_DATE, "%Y-%m-%d"), "%Y-%m"),
          year = format(as.Date(EVENT_DATE, "%Y-%m-%d"), "%Y"))
 
-civilian_violence_plot <- civilian_violence |>
-  group_by(month) |>
-  mutate(fatalities_per_month = sum(FATALITIES)) |> 
-  ggplot() +
-  facet_grid(~year, scales="free", space = "free_x", switch = "x") +
-  geom_col(mapping = aes(x = month, y = fatalities_per_month), 
-           fill = "darkslateblue") +
-  theme(axis.text.x = element_blank(), 
-        panel.spacing = unit(0.05, "lines"),
-        strip.placement = "outside") +
-  labs(
-    x = "Year",
-    y = "Casualties per Month",
-    title = "Civilian Casualities in the Tigray War from November 2020 to Present")
-civilian_violence_plot
-
 civilian_violence_plot <- women_violence |>
   group_by(month) |>
   mutate(
@@ -87,16 +93,18 @@ civilian_violence_plot <- women_violence |>
   ) |>
   ggplot() +
   facet_grid(~year, scales="free", space = "free_x", switch = "x") +
-  geom_col(mapping = aes(x = month, y = fatalities_per_month), 
-           fill = "darkslateblue") +
-  geom_col(mapping = aes(x = month, y = women_fatalities_per_month), 
-           fill = "pink") +
+  geom_col(mapping = aes(x = month, y = fatalities_per_month, fill = 'Civilian fatalities')) +
+  geom_col(mapping = aes(x = month, y = women_fatalities_per_month, fill = 'Women fatalities')) +
   theme(axis.text.x = element_blank(), 
         panel.spacing = unit(0.05, "lines"),
         strip.placement = "outside") +
   labs(
     x = "Year",
-    y = "Casualties per Month",
-    title = "Civilian Casualities in the Tigray War from November 2020 to Present")
+    y = "Fatalities per Month",
+    title = "Civilian Casualities in the Tigray War from November 2020 to Present"
+    ) +
+  scale_fill_manual(name = 'Fatalities',
+                     values = c('Civilian fatalities'='darkslateblue', 'Women fatalities'= 'pink'))
+civilian_violence_plot
 ```
 
