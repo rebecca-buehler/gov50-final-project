@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-1-1.png","index_files/figure-html5/unnamed-chunk-2-1.png","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["~$estions.docx","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-1-1.png","index_files/figure-html5/unnamed-chunk-2-1.png","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","Questions.docx"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -227,9 +227,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     display: none !important;
   }
 
+  hr.section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0px;
+  }
+
+
+  d-byline {
+    border-top: none;
+  }
+
   d-article {
     padding-top: 2.5rem;
     padding-bottom: 30px;
+    border-top: none;
   }
 
   d-appendix {
@@ -324,6 +336,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article div.sourceCode pre {
     padding-left: 18px;
     font-size: 14px;
+  }
+
+  /* tweak for Pandoc numbered line within distill */
+  d-article pre.numberSource code > span {
+      left: -2em;
   }
 
   d-article pre {
@@ -1085,6 +1102,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // create d-title
     $('.d-title').changeElementType('d-title');
 
+    // separator
+    var separator = '<hr class="section-separator" style="clear: both"/>';
+    // prepend separator above appendix
+    $('.d-byline').before(separator);
+    $('.d-article').before(separator);
+
     // create d-byline
     var byline = $('<d-byline></d-byline>');
     $('.d-byline').replaceWith(byline);
@@ -1162,8 +1185,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     $('.distill-force-highlighting-css').parent().remove();
 
     // remove empty line numbers inserted by pandoc when using a
-    // custom syntax highlighting theme
-    $('code.sourceCode a:empty').remove();
+    // custom syntax highlighting theme, except when numbering line
+    // in code chunk
+    $('pre:not(.numberLines) code.sourceCode a:empty').remove();
 
     // load distill framework
     load_distill_framework();
@@ -1189,12 +1213,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
       // add orcid ids
       $('.authors-affiliations').find('.author').each(function(i, el) {
         var orcid_id = front_matter.authors[i].orcidID;
+        var author_name = front_matter.authors[i].author
         if (orcid_id) {
           var a = $('<a></a>');
           a.attr('href', 'https://orcid.org/' + orcid_id);
           var img = $('<img></img>');
           img.addClass('orcid-id');
-          img.attr('alt', 'ORCID ID');
+          img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
           img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
           a.append(img);
           $(this).append(a);
@@ -1472,7 +1497,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="index_files/header-attrs-2.24/header-attrs.js"></script>
+  <script src="index_files/header-attrs-2.25/header-attrs.js"></script>
   <script src="index_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="index_files/popper-2.6.0/popper.min.js"></script>
   <link href="index_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -1504,6 +1529,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 <div class="d-title">
 <h1>Gov 50 Final Project</h1>
+
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
 <p>A Gender-Based Analysis of Violence in the Tigray War</p>
@@ -1517,37 +1543,38 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<h2 id="project-thoughts">Project thoughts</h2>
-<p>I am planning to create a data visualization for my senior thesis. My thesis is an investigation of gender essentialisms in humanitarian media, or our tendency to portray civilian women as vulnerable victims and civilian men as violent perpetrators. These essentialisms are prevalent even though innocent men and boys (noncombatants) are twice as likely to die as a result of violent conflict. In my thesis, I will critique the “women and children first” narrative as it appears explicitly in text and implicitly in imagery. I will do this by identifying the gap between reality (the proportion of civilian victims that are male) and representation (the proportion of humanitarian media that centers male vulnerability and victimization). The central case study of my thesis is the conflict and humanitarian crisis in the Tigray region of Ethiopia.</p>
-<p>I would like to use this project to create a data visualization that reflects the reality of the violence in Tigray. I will then compare this analysis to my analysis of the media representation of the violence in tigray. Ultimately, I would like to visualize the gap between representation and reality.</p>
-<h2 id="research-proposal">Research proposal</h2>
-<p>Gender disaggregated casualty data from the war in Tigray is not available. The ACLED data (<a href="https://epo.acleddata.com/data/" class="uri">https://epo.acleddata.com/data/</a>) distinguishes violence that specifically targeted women, without doing the same for violence that targeted men. It also provides information on type of violence, perpetrating groups, targeted groups, and fatalities, among other categories. Using the available data from ACLED and the existing literature on male victimization, I will seek to answer the following research questions:</p>
-<ol type="1">
-<li>What proportion of the violence during the war in Tigray targeted civilians? Of that violence, what proportion was lethal violence? How many total civilian casualties occurred during the war?</li>
-<li>What proportion of the violence during the war in Tigray targeted women (female civilians)? Of that violence, what proportion was lethal violence? How many fatalities occurred during violent events that targeted women?</li>
-<li>Based on the findings of Ormhaug et al. 2009, what is the estimated difference in male and female civilian casualties in the war in Tigray?</li>
-</ol>
-<p>I hypothesize that the proportion of lethal violence that specifically targets women will be smaller than the proportion of lethal violence that targets civilians in general. Existing literature demonstrates that female civilians suffer disproportionately from conflict-related sexual violence, while male civilians suffer disproportionately from all other forms of conflict-related violence. This data set distinguishes between event and sub-event type, with sexual violence as a category. Therefore, I estimate that the majority of events where women were targeted will be coded as sexual violence.</p>
-<p>Additionally, I hypothesize that based on the estimates of Ormhaug et al., male civilians will be disproportionately affected by lethal violence in Tigray.The existing literature on gendered victimization in conflict contexts demonstrates that male civilians are twice as likely to die as female civilians (Ormhaug et al.). Using this estimate, I hypothesize that the number of civilian casualities, and subsequently the estimated proportion of those that are men, will be greater than the number of casualties from events specifically targeting women, such as sexual violence.</p>
-<p>My variables of interest are type of violence and civilian group targeted. My outcome of interest in the number of fatalities.</p>
-<h2 id="results-from-one-analysis">Results from one analysis</h2>
+<h2 id="final-report">Final Report</h2>
+<h2 id="introduction">Introduction</h2>
+<p>One year ago, the war in Tigray was the largest violent conflict in the world. However, based on its coverage in the media, one never would have known. By the end of 2022, two years after the conflict began, researchers from Ghent University estimated that as many as 600,000 civilians had died: between 50,000 and 100,000 had been killed; 150,000 were victims of famine; and more than 100,000 others had died due to the lack of medical aid (Green). For reference, as of November 2023, the UN estimates the war in Ukraine to have killed 10,000 civilians (source). Yet, while the war in Ukraine has received daily attention from newspapers, governments, and organizations around the world, the war in Tigray appears forgotten by the West (Green).</p>
+<h2 id="research-question-1">Research Question #1</h2>
+<p>In her 2012 disaggregated analysis of violence against civilians in African civil wars, Clionadh Raleigh, the Executive Director of the Armed Conflict Location and Event Data (ACLED) project, recognizes the tension between the popular accounts that civilians represent 80-90% of all conflict deaths and conclusions that far fewer civilians are killed during civil wars (Raleigh 2012, Goldstein 2011).</p>
+<p>The staggering estimates of civilian casualties in Tigray would suggest support for the first hypothesis. However, these estimates do not compare civilian casualties to those for combatant fatalities (source). In the following data analysis, I will evaluate the casualty data from the Tigray War against the popular hypothesis that 80-90% of all conflict deaths are civilians and Goldstein’s counterargument that this proportion is much lower in civil conflicts. I will use data from ACLED, the most comprehensive source of subnational political violence data, to answer the following research question: What proportion of lethal violence during the Tigray War targeted civilians? I hypothesize that the proportion of civilian fatalities will be significantly higher than the proportion of combatant fatalities.</p>
+<h2 id="research-question-2">Research Question #2</h2>
+<p>A secondary tension relevant to the Tigray War occurs between the popular tendency to view “women and children” as the primary victims of war and the reality of gendered civilian victimization (source). This assumption of female vulnerability is, in part, the product of deeply ingrained gender stereotypes, media coverage that centers stories and images of women and children, and the humanitarian practice of identifying, prioritizing, and evacuating “women and children” as a particularly vulnerable group (Carpenter 2006). It is true that women confront unique vulnerabilities in conflict contexts and their aftermath. However, in conflict contexts around the world, civilian men are twice as likely to die compared to civilian women (Ormhaug et al. 2009). Men made up 82% of civilians killed in the Iraq War from 2003-2005, nearly 90% of civilian casualties in the Syrian civil war from 2011-2015, and more than 80% of civilian deaths and disappearances in the Timor-Leste and Sierra Leone conflicts (Ormhaug et al. 2009, Syrian Observatory 2023, Silva and Ball 2006, Conibere 2004). Available evidence suggests that women suffer disproportionate rates of conflict-related sexual violence and more long-term consequences of conflict (Cohen and Nordås 2014, Plümper and Neumayer 2006). However, men are more likely to suffer from nearly every form of conflict-related violence, including every form of lethal violence (Carpenter 2006).</p>
+<p>Although ACLED does not provide gender-disaggregated casualty data for Ethiopia, its data set notes when violence that specifically targeted women (without doing the same for violence that targeted men, an example in and of itself of the general tendency to overlook male victimization). Using this data, I will seek to answer the following research question: What proportion of lethal violence against civilians during the Tigray War targeted women? I hypothesize that the proportion of lethal violence that specifically targets women will not constitute the majority of lethal violence against civilians, contrary to the popular conception of women as the primary victims of war. In the following data visualization, I will present these findings.</p>
+<h2 id="data-analysis">Data analysis</h2>
+<p>The ACLED dataset is limited due to the difficulty of obtaining casualty data from the Tigray region, and it does not represent the total number of civilian combatant deaths during the war (Tigray Conflict Coding Methodology).</p>
+<p>Region and country were already held constant. I controlled for region (Afar, Amhara, Tigray), year of the conflict (2020-2023)</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ethiopia</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readxl.tidyverse.org/reference/read_excel.html'>read_excel</a></span><span class='op'>(</span><span class='st'>"~/Documents/Thesis/Data/ACLED/Ethiopia_1997-2023_Sep22.xlsx"</span><span class='op'>)</span> </span>
 <span></span>
 <span><span class='va'>tigray_war</span> <span class='op'>&lt;-</span> <span class='va'>ethiopia</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>EVENT_DATE</span> <span class='op'>&gt;=</span> <span class='st'>"2020-11-03"</span><span class='op'>)</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span></span>
+<span>    <span class='va'>EVENT_DATE</span> <span class='op'>&gt;=</span> <span class='st'>"2020-11-03"</span>,</span>
+<span>    <span class='va'>ADMIN1</span> <span class='op'>==</span> <span class='st'>"Tigray"</span> <span class='op'>|</span> <span class='op'>(</span><span class='va'>ADMIN1</span> <span class='op'>==</span> <span class='st'>"Afar"</span> <span class='op'>&amp;</span> <span class='va'>ACTOR1</span> <span class='op'>==</span> <span class='st'>"TPLF: Tigray People's Liberation Front"</span><span class='op'>)</span> <span class='op'>|</span> <span class='op'>(</span><span class='va'>ADMIN1</span> <span class='op'>==</span> <span class='st'>"Amhara"</span> <span class='op'>&amp;</span> <span class='va'>ACTOR1</span> <span class='op'>==</span> <span class='st'>"TPLF: Tigray People's Liberation Front"</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='va'>tigray_war</span><span class='op'>$</span><span class='va'>EVENT_TYPE</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>tigray_war</span><span class='op'>$</span><span class='va'>EVENT_TYPE</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>model1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>FATALITIES</span> <span class='op'>~</span> <span class='va'>EVENT_TYPE</span> <span class='op'>+</span> <span class='va'>YEAR</span>, data <span class='op'>=</span> <span class='va'>tigray_war</span><span class='op'>)</span></span>
+<span><span class='va'>model1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>FATALITIES</span> <span class='op'>~</span> <span class='va'>EVENT_TYPE</span> <span class='op'>+</span> <span class='va'>YEAR</span> <span class='op'>+</span> <span class='va'>ADMIN1</span>, data <span class='op'>=</span> <span class='va'>tigray_war</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='fu'><a href='https://rdrr.io/pkg/stargazer/man/stargazer.html'>stargazer</a></span><span class='op'>(</span><span class='va'>model1</span>, </span>
 <span>          title <span class='op'>=</span> <span class='st'>"Event Type's Effect on Fatality Count"</span>, </span>
 <span>          type <span class='op'>=</span> <span class='st'>"text"</span>,</span>
 <span>          covariate.labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Explosions/Remote Violence"</span>, <span class='st'>"Protests"</span>,</span>
-<span>                               <span class='st'>"Riots"</span>,<span class='st'>"Strategic Developments"</span>,<span class='st'>"Violence Against Civilians"</span>,</span>
-<span>                               <span class='st'>"Year"</span>,<span class='st'>"Capital"</span>,<span class='st'>"Constant"</span><span class='op'>)</span>,</span>
+<span>                               <span class='st'>"Riots"</span>,<span class='st'>"Strategic Developments"</span>,</span>
+<span>                               <span class='st'>"Violence Against Civilians"</span>,</span>
+<span>                               <span class='st'>"Year"</span><span class='op'>)</span>,</span>
 <span>          dep.var.labels <span class='op'>=</span> <span class='st'>"Fatalities"</span><span class='op'>)</span></span></code></pre>
 </div>
 <pre><code>
@@ -1557,74 +1584,67 @@ Event Type&#39;s Effect on Fatality Count
                            ---------------------------
                                    Fatalities         
 ------------------------------------------------------
-Explosions/Remote Violence            1.242           
-                                     (1.135)          
+Explosions/Remote Violence           4.582**          
+                                     (1.981)          
                                                       
-Protests                            -4.230***         
-                                     (0.853)          
+Protests                             -0.563           
+                                     (3.203)          
                                                       
-Riots                                -2.591           
-                                     (1.691)          
+Riots                                 0.425           
+                                    (10.502)          
                                                       
-Strategic Developments              -4.213***         
-                                     (0.885)          
+Strategic Developments               -1.400           
+                                     (2.352)          
                                                       
-Violence Against Civilians          2.190***          
-                                     (0.593)          
+Violence Against Civilians          9.090***          
+                                     (1.495)          
                                                       
-Year                                -1.356***         
-                                     (0.271)          
+Year                                -1.781**          
+                                     (0.791)          
                                                       
-Capital                           2,746.879***        
-                                    (548.105)         
+ADMIN1Amhara                         -2.410           
+                                     (2.160)          
+                                                      
+ADMIN1Tigray                         -1.426           
+                                     (2.046)          
+                                                      
+Constant                           3,604.416**        
+                                   (1,598.450)        
                                                       
 ------------------------------------------------------
-Observations                          4,897           
-R2                                    0.023           
-Adjusted R2                           0.022           
-Residual Std. Error            16.756 (df = 4890)     
-F Statistic                 19.097*** (df = 6; 4890)  
+Observations                          1,646           
+R2                                    0.030           
+Adjusted R2                           0.025           
+Residual Std. Error            20.944 (df = 1637)     
+F Statistic                  6.284*** (df = 8; 1637)  
 ======================================================
 Note:                      *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 </div>
 <p>This analysis looks at the effect of event type (Battles, Explosions/Remote Violence, Protests, Riots, Strategic Developments, Civilian Violence) and year of the conflict (2020-2023) on the number of fatalities. Sub-events categorized as Civilian Violence include attacks, sexual violence, and abductions/forced disappearances. This analysis includes data from 4,901 events between the start of the Tigray War on November 3, 2020 and September 21, 2023. This data was collected by the Armed Conflict Location &amp; Event Data (ACLED) project and published by the Ethiopia Peace Observatory.</p>
-<p>A regression of event type on fatalities with “Battles” as the baseline event type shows that violence against civilians has an associated increase in fatalities of 2.1898. One would expect roughly 2 more people to die in a given event targeting civilians than in a battle. The standard error is 0.5926, and these results are statistically significant.</p>
-<h2 id="first-data-visualization">First data visualization</h2>
+<p>A regression of event type on fatalities with “Battles” as the baseline event type shows that violence against civilians has an associated increase in fatalities of 9.09. One would expect roughly 2 more people to die in a given event targeting civilians than in a battle. The standard error is 0.5926, and these results are statistically significant.
+## Add interpretation of year and admin1</p>
+<h2 id="data-visualization">Data visualization</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>civilian_violence</span> <span class='op'>&lt;-</span> <span class='va'>ethiopia</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>CIVILIAN_TARGETING</span> <span class='op'>==</span> <span class='st'>"Civilian targeting"</span>, <span class='va'>EVENT_DATE</span> <span class='op'>&gt;=</span> <span class='st'>"2020-11-03"</span><span class='op'>)</span> </span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>civilian_violence</span><span class='op'>$</span><span class='va'>FATALITIES</span><span class='op'>)</span></span></code></pre>
-</div>
-<pre><code>[1] 9101</code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>women_violence</span> <span class='op'>&lt;-</span> <span class='va'>ethiopia</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>EVENT_DATE</span> <span class='op'>&gt;=</span> <span class='st'>"2020-11-03"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span></span>
+<span>    <span class='va'>CIVILIAN_TARGETING</span> <span class='op'>==</span> <span class='st'>"Civilian targeting"</span>, </span>
+<span>    <span class='va'>EVENT_DATE</span> <span class='op'>&gt;=</span> <span class='st'>"2020-11-03"</span>,</span>
+<span>    <span class='va'>ADMIN1</span> <span class='op'>==</span> <span class='st'>"Tigray"</span> <span class='op'>|</span> <span class='op'>(</span><span class='va'>ADMIN1</span> <span class='op'>==</span> <span class='st'>"Afar"</span> <span class='op'>&amp;</span> <span class='va'>ACTOR1</span> <span class='op'>==</span> <span class='st'>"TPLF: Tigray People's Liberation Front"</span><span class='op'>)</span> <span class='op'>|</span> <span class='op'>(</span><span class='va'>ADMIN1</span> <span class='op'>==</span> <span class='st'>"Amhara"</span> <span class='op'>&amp;</span> <span class='va'>ACTOR1</span> <span class='op'>==</span> <span class='st'>"TPLF: Tigray People's Liberation Front"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
 <span>    WOMEN <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"Women"</span>, <span class='va'>ASSOC_ACTOR_2</span><span class='op'>)</span> <span class='op'>==</span> <span class='cn'>TRUE</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>,</span>
 <span>    month <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='va'>EVENT_DATE</span>, <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>, <span class='st'>"%Y-%m"</span><span class='op'>)</span>,</span>
 <span>    year <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='va'>EVENT_DATE</span>, <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>, <span class='st'>"%Y"</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>women_violence</span><span class='op'>$</span><span class='va'>FATALITIES</span><span class='op'>)</span></span></code></pre>
-</div>
-<pre><code>[1] 21391</code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>civilian_violence</span> <span class='op'>&lt;-</span> <span class='va'>civilian_violence</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>month <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='va'>EVENT_DATE</span>, <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>, <span class='st'>"%Y-%m"</span><span class='op'>)</span>,</span>
-<span>         year <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='va'>EVENT_DATE</span>, <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>, <span class='st'>"%Y"</span><span class='op'>)</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='va'>civilian_violence_plot</span> <span class='op'>&lt;-</span> <span class='va'>women_violence</span> <span class='op'>|&gt;</span></span>
+<span><span class='va'>civilian_violence_plot</span> <span class='op'>&lt;-</span> <span class='va'>civilian_violence</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>month</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
-<span>    fatalities_per_month <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>FATALITIES</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>fatalities_per_month <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>FATALITIES</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>WOMEN</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
-<span>    women_fatalities_per_month <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>FATALITIES</span><span class='op'>)</span></span>
-<span>  <span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>women_fatalities_per_month <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>FATALITIES</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>facet_grid</a></span><span class='op'>(</span><span class='op'>~</span><span class='va'>year</span>, scales<span class='op'>=</span><span class='st'>"free"</span>, space <span class='op'>=</span> <span class='st'>"free_x"</span>, switch <span class='op'>=</span> <span class='st'>"x"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month</span>, y <span class='op'>=</span> <span class='va'>fatalities_per_month</span>, fill <span class='op'>=</span> <span class='st'>'Civilian fatalities'</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month</span>, y <span class='op'>=</span> <span class='va'>women_fatalities_per_month</span>, fill <span class='op'>=</span> <span class='st'>'Women fatalities'</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month</span>, y <span class='op'>=</span> <span class='va'>fatalities_per_month</span>, fill <span class='op'>=</span> <span class='st'>'Fatalities from violence targeting civilians'</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month</span>, y <span class='op'>=</span> <span class='va'>women_fatalities_per_month</span>, fill <span class='op'>=</span> <span class='st'>'Fatalities from violence targeting women'</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_blank</a></span><span class='op'>(</span><span class='op'>)</span>, </span>
 <span>        panel.spacing <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.05</span>, <span class='st'>"lines"</span><span class='op'>)</span>,</span>
 <span>        strip.placement <span class='op'>=</span> <span class='st'>"outside"</span><span class='op'>)</span> <span class='op'>+</span></span>
@@ -1634,12 +1654,16 @@ Note:                      *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <span>    title <span class='op'>=</span> <span class='st'>"Civilian Casualities in the Tigray War from November 2020 to Present"</span></span>
 <span>    <span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>'Fatalities'</span>,</span>
-<span>                     values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Civilian fatalities'</span><span class='op'>=</span><span class='st'>'darkslateblue'</span>, <span class='st'>'Women fatalities'</span><span class='op'>=</span> <span class='st'>'pink'</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>                     values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Fatalities from violence targeting civilians'</span><span class='op'>=</span><span class='st'>'darkslateblue'</span>, <span class='st'>'Fatalities from violence targeting women'</span><span class='op'>=</span> <span class='st'>'pink'</span><span class='op'>)</span><span class='op'>)</span></span>
 <span><span class='va'>civilian_violence_plot</span></span></code></pre>
 </div>
 <p><img src="index_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
 </div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>The war in Tigray saw war crimes and crimes against humanity, including deliberate starvation, torture, ethnic cleansing, extra-judicial killings, and sexual violence (Green). Despite the cessation of hostilities in November 2022, the violence and suffering in the Tigray region continue today. With respect to these staggering statistics, the aid and attention from the rest of the world have been dramatically insufficient. There is a dire need for humanitarian assistance and post-conflict reconstruction. The international community has the obligation to respond.</p>
+<h2 id="results-from-one-analysis">Results from one analysis</h2>
+<h2 id="first-data-visualization">First data visualization</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
