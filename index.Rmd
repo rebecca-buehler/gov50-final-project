@@ -25,7 +25,7 @@ One year ago, the war in Tigray, Ethiopia, was the largest violent conflict in t
 
 Yet, while the war in Ukraine has received daily attention from newspapers, governments, and organizations around the world, the war in Tigray appears forgotten by the West (Green). Despite the cessation of hostilities in November 2022, the violence and suffering in the Tigray region continue today. With respect to these staggering statistics, the aid and attention from the rest of the world have been dramatically insufficient. There is a dire need for humanitarian assistance and post-conflict reconstruction, and the international community has the obligation to respond.
 
-**Research Question #1**
+**Research Question #1 & #2**
 
 In her 2012 disaggregated analysis of violence against civilians in African civil wars, Clionadh Raleigh, Executive Director of the Armed Conflict Location and Event Data (ACLED) project, recognizes the tension between the popular accounts that civilians represent 80-90% of all conflict deaths and conclusions that far fewer civilians are killed during civil wars (Raleigh 2012, Goldstein 2011). The staggering estimates of civilian casualties in Tigray appear to suggest support for the first hypothesis. However, those estimates do not compare civilian casualties to those for combatant fatalities. In the following data analysis, I will evaluate fatality data from the Tigray War against the popular hypothesis that 80-90% of all conflict deaths are civilians and Goldstein 2011's counterargument that this proportion is much lower in civil wars. I will use data from ACLED, the most comprehensive source of subnational political violence data, to answer the following research questions: 
 
@@ -37,7 +37,7 @@ I hypothesize that:
 H1: The proportion of civilian fatalities will be significantly higher than the proportion of combatant fatalities.
 H2: Events of violence against civilians will be associated with the highest fatality rate. 
 
-**Research Question #2**
+**Research Question #3**
 
 A secondary tension relevant to the Tigray War occurs between the popular tendency to view "women and children" as the primary victims of war and the reality of gendered civilian victimization (Carpenter 2003, 2005, 2006). This assumption of disproportionate female victimization is, in part, the product of deeply ingrained gender stereotypes, media coverage that centers women and children, and the humanitarian practice of identifying, prioritizing, and evacuating "women and children" as a particularly vulnerable group. It is true that women confront unique vulnerabilities in conflict contexts and their aftermaths. However, in conflict contexts around the world, civilian men are twice as likely to die compared to civilian women (Ormhaug et al. 2009). Available evidence suggests that women suffer disproportionate rates of conflict-related sexual violence and more long-term consequences of conflict (Cohen and Nordås 2014, Plümper and Neumayer 2006). However, men are more likely to suffer from nearly every form of conflict-related violence, including every form of lethal violence (Carpenter 2006). I will use data from ACLED to answer my third research question:
 
