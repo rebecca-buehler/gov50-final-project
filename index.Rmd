@@ -264,7 +264,7 @@ tigray_scatterplot2
 
 ## Conclusion
 
-**Support for my Hypotheses**
+**Support for Hypotheses**
 
 In the above analyses and visualizations, I found support for H2 and H3. Further analysis is necessary to accept or reject H1. 
 
