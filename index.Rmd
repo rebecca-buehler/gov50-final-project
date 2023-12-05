@@ -1,35 +1,11 @@
 ---
 title: "Gov 50 Final Project"
 author: "Rebecca Buehler"
-description: "A Gender-Based Analysis of Violence in the Tigray War"
+description: "An Analysis of Fatalities in the Tigray War (2020 - 2023)"
 output:
   distill::distill_article:
     self_contained: false
 ---
-
-## Final Report
-
-## Introduction
-
-One year ago, the war in Tigray was the largest violent conflict in the world. However, based on its coverage in the media, one never would have known. By the end of 2022, two years after the conflict began, researchers from Ghent University estimated that as many as 600,000 civilians had died: between 50,000 and 100,000 had been killed; 150,000 were victims of famine; and more than 100,000 others had died due to the lack of medical aid (Green). For reference, as of November 2023, the UN estimates the war in Ukraine to have killed 10,000 civilians (source). Yet, while the war in Ukraine has received daily attention from newspapers, governments, and organizations around the world, the war in Tigray appears forgotten by the West (Green).
-
-## Research Question #1
-
-In her 2012 disaggregated analysis of violence against civilians in African civil wars, Clionadh Raleigh, the Executive Director of the Armed Conflict Location and Event Data (ACLED) project, recognizes the tension between the popular accounts that civilians represent 80-90% of all conflict deaths and conclusions that far fewer civilians are killed during civil wars (Raleigh 2012, Goldstein 2011). 
-
-The staggering estimates of civilian casualties in Tigray would suggest support for the first hypothesis. However, these estimates do not compare civilian casualties to those for combatant fatalities (source). In the following data analysis, I will evaluate the casualty data from the Tigray War against the popular hypothesis that 80-90% of all conflict deaths are civilians and Goldstein's counterargument that this proportion is much lower in civil conflicts. I will use data from ACLED, the most comprehensive source of subnational political violence data, to answer the following research question: What proportion of lethal violence during the Tigray War targeted civilians? I hypothesize that the proportion of civilian fatalities will be significantly higher than the proportion of combatant fatalities. 
-
-## Research Question #2 
-
-A secondary tension relevant to the Tigray War occurs between the popular tendency to view "women and children" as the primary victims of war and the reality of gendered civilian victimization (source). This assumption of female vulnerability is, in part, the product of deeply ingrained gender stereotypes, media coverage that centers stories and images of women and children, and the humanitarian practice of identifying, prioritizing, and evacuating "women and children" as a particularly vulnerable group (Carpenter 2006). It is true that women confront unique vulnerabilities in conflict contexts and their aftermath. However, in conflict contexts around the world, civilian men are twice as likely to die compared to civilian women (Ormhaug et al. 2009). Men made up 82% of civilians killed in the Iraq War from 2003-2005, nearly 90% of civilian casualties in the Syrian civil war from 2011-2015, and more than 80% of civilian deaths and disappearances in the Timor-Leste and Sierra Leone conflicts (Ormhaug et al. 2009, Syrian Observatory 2023, Silva and Ball 2006, Conibere 2004). Available evidence suggests that women suffer disproportionate rates of conflict-related sexual violence and more long-term consequences of conflict (Cohen and Nordås 2014, Plümper and Neumayer 2006). However, men are more likely to suffer from nearly every form of conflict-related violence, including every form of lethal violence (Carpenter 2006).
-
-Although ACLED does not provide gender-disaggregated casualty data for Ethiopia, its data set notes when violence that specifically targeted women (without doing the same for violence that targeted men, an example in and of itself of the general tendency to overlook male victimization). Using this data, I will seek to answer the following research question: What proportion of lethal violence against civilians during the Tigray War targeted women? I hypothesize that the proportion of lethal violence that specifically targets women will not constitute the majority of lethal violence against civilians, contrary to the popular conception of women as the primary victims of war. In the following data visualization, I will present these findings. 
-
-## Data analysis
-
-The ACLED dataset is limited due to the difficulty of obtaining casualty data from the Tigray region, and it does not represent the total number of civilian combatant deaths during the war (Tigray Conflict Coding Methodology). 
-
-Region and country were already held constant. I controlled for region (Afar, Amhara, Tigray), year of the conflict (2020-2023)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -40,7 +16,46 @@ library(stargazer)
 library(anytime)
 library(lubridate)
 library(arm)
+library(modelsummary)
 ```
+
+## Introduction
+
+One year ago, the war in Tigray, Ethiopia, was the largest violent conflict in the world. By the end of 2022, two years after the conflict began, researchers from the  Ghent University estimated that as many as 600,000 civilians had died: between 50,000 and 100,000 had been killed; 150,000 were victims of famine; and more than 100,000 others had died due to the lack of medical aid (Green). These estimates do not include the deaths of civilians who have died from violence, famine, and the lack of humanitarian assistance in 2023. As of November 2023, the UN estimates the war in Ukraine to have killed 10,000 civilians, a tenth of the civilian victims of violence alone in Tigray (Janowski). 
+
+Yet, while the war in Ukraine has received daily attention from newspapers, governments, and organizations around the world, the war in Tigray appears forgotten by the West (Green). Despite the cessation of hostilities in November 2022, the violence and suffering in the Tigray region continue today. With respect to these staggering statistics, the aid and attention from the rest of the world have been dramatically insufficient. There is a dire need for humanitarian assistance and post-conflict reconstruction, and the international community has the obligation to respond.
+
+**Research Question #1**
+
+In her 2012 disaggregated analysis of violence against civilians in African civil wars, Clionadh Raleigh, Executive Director of the Armed Conflict Location and Event Data (ACLED) project, recognizes the tension between the popular accounts that civilians represent 80-90% of all conflict deaths and conclusions that far fewer civilians are killed during civil wars (Raleigh 2012, Goldstein 2011). The staggering estimates of civilian casualties in Tigray appear to suggest support for the first hypothesis. However, those estimates do not compare civilian casualties to those for combatant fatalities. In the following data analysis, I will evaluate fatality data from the Tigray War against the popular hypothesis that 80-90% of all conflict deaths are civilians and Goldstein 2011's counterargument that this proportion is much lower in civil wars. I will use data from ACLED, the most comprehensive source of subnational political violence data, to answer the following research questions: 
+
+1. Did civilian casualties constitute the majority of fatalities in the Tigray War? 
+2. Which kind of violence from this conflict is associated with the highest fatality rate? 
+
+I hypothesize that:
+
+H1: The proportion of civilian fatalities will be significantly higher than the proportion of combatant fatalities.
+H2: Events of violence against civilians will be associated with the highest fatality rate. 
+
+**Research Question #2**
+
+A secondary tension relevant to the Tigray War occurs between the popular tendency to view "women and children" as the primary victims of war and the reality of gendered civilian victimization (Carpenter 2003, 2005, 2006). This assumption of disproportionate female victimization is, in part, the product of deeply ingrained gender stereotypes, media coverage that centers women and children, and the humanitarian practice of identifying, prioritizing, and evacuating "women and children" as a particularly vulnerable group. It is true that women confront unique vulnerabilities in conflict contexts and their aftermaths. However, in conflict contexts around the world, civilian men are twice as likely to die compared to civilian women (Ormhaug et al. 2009). Available evidence suggests that women suffer disproportionate rates of conflict-related sexual violence and more long-term consequences of conflict (Cohen and Nordås 2014, Plümper and Neumayer 2006). However, men are more likely to suffer from nearly every form of conflict-related violence, including every form of lethal violence (Carpenter 2006). I will use data from ACLED to answer my third research question:
+
+3. Did the majority of lethal violence against civilians in the Tigray War target women? 
+
+I hypothesize that, contrary to the popular conception and media representation of women as the primary victims of war in general and of the Tigray War in particular:
+
+H3: The proportion of lethal violence that specifically targets women will not constitute the majority of lethal violence against civilians. 
+
+## Data 
+
+I obtained ACLED data from the Ethiopia Peace Observatory, a special project launched by ACLED to enhance data collection within Ethiopia. This dataset includes violent events from January 1997 through September 2023, but its data since the start of the Tigray War is limited due to the extreme difficulty of obtaining casualty data from the Tigray region. Thus, it does not represent the total number of civilian or combatant deaths during the war ("EPO Sourcing Methodology"). The key independent variable of interest for this research project is the type of violence, coded as EVENT_TYPE, which includes Battles, Explosions/Remote Violence, Protests, Riots, Strategic Developments, and Civilian Violence. The key dependent variable of interest is casualties from a specific event, coded as FATALITIES. Both of these variables were measured by expert coding ("ACLED Codebook"). My research design is cross-sectional, comparing the total fatalities across these event types at individual points in time.  
+
+In order to limit this dataset to exclusively reflect violent events related to the Tigray War, I filtered the data by date, region, and actors involved. The analysis below includes data from events between the start of the Tigray War on November 3, 2020 and the last entry on September 21, 2023. I further limited my analysis to events that occured in Tigray, Afar, and Amhara, the regions where the fighting took place. Although the Tigray War spilled into the Afar and Amhara regions, these regions also saw armed conflict unrelated to the conflict in Tigray. Therefore, I filtered events from Afar and Amhara to only include those in which the Tigray People's Liberation Front, a primary party to the conflict, was involved. 
+
+**Plot 1: Tigray War Fatalities by Type of Violence** 
+
+The plot below summarizes fatalities across all violent event types during and after the Tigray War (2020-2023). 
 
 ```{r}
 ethiopia <- read_excel("~/Documents/Thesis/Data/ACLED/Ethiopia_1997-2023_Sep22.xlsx") 
@@ -48,35 +63,84 @@ ethiopia <- read_excel("~/Documents/Thesis/Data/ACLED/Ethiopia_1997-2023_Sep22.x
 tigray_war <- ethiopia |>
   filter(
     EVENT_DATE >= "2020-11-03",
-    ADMIN1 == "Tigray" | (ADMIN1 == "Afar" & ACTOR1 == "TPLF: Tigray People's Liberation Front") | (ADMIN1 == "Amhara" & ACTOR1 == "TPLF: Tigray People's Liberation Front"))
+    ADMIN1 == "Tigray" | 
+      (ADMIN1 == "Afar" & 
+         ACTOR1 == "TPLF: Tigray People's Liberation Front") | 
+      (ADMIN1 == "Amhara" & 
+         ACTOR1 == "TPLF: Tigray People's Liberation Front"))
 
-tigray_war$EVENT_TYPE <- as.factor(tigray_war$EVENT_TYPE)
+tigray_barplot <- tigray_war |>
+  ggplot(mapping = aes(x = EVENT_TYPE, y = FATALITIES)) +
+  geom_col(fill = "indianred1") +
+  labs(
+    x = "Event Type",
+    y = "Number of fatalities",
+    title = "Tigray War Fatalities by Type of Violence") +
+  scale_x_discrete(labels=c("Explosions/Remote violence" = "Remote violence",
+                            "Strategic developments" = "Developments",
+                            "Violence against civilians" = 
+                            "Civilian violence"))
+tigray_barplot
+```
+Plot 1 indicates that battles had a higher number of fatalities than violence against civilians, which would suggest that more combatants than civilians were killed in the Tigray War. Battles resulted in approximately 3,400 fatalities, while violence against civilians resulted in approximately 2,800 fatalities. However, instances coded as "Explosions/Remote violence" can be events that killed combatants or civilians. Therefore, further analysis is required to answer my first research question. 
 
-model1 <- lm(FATALITIES ~ EVENT_TYPE + YEAR + ADMIN1, data = tigray_war)
+To determine whether civilians constituted the majority of fatalities in the Tigray War, I filtered the fatalities from explosions and remote violence by the "CIVILIAN_TARGETING" variable. I then found the difference between the total combatant fatalities and the total civilian fatalities from remote violence. This difference is -81, indicating that 81 more civilians died due to to violence against civilians and remote violence than combatants died due to battles and remote violence. In the scheme of 50,000 - 100,000 civilians killed in the conflict, this difference is not significant and not necessarily reflective of total fatalities. Therefore, I reject H1: The proportion of civilian fatalities will be significantly higher than the proportion of combatant fatalities.
 
-stargazer(model1, 
-          title = "Event Type's Effect on Fatality Count", 
-          type = "text",
-          covariate.labels = c("Explosions/Remote Violence", "Protests",
-                               "Riots","Strategic Developments",
-                               "Violence Against Civilians",
-                               "Year"),
-          dep.var.labels = "Fatalities")
+```{r}
+remote_combatant <- sum(subset(tigray_war, EVENT_TYPE == "Battles" | EVENT_TYPE == "Explosions/Remote violence")$FATALITIES) - sum(subset(tigray_war, EVENT_TYPE == "Explosions/Remote violence" & CIVILIAN_TARGETING == "Civilian targeting")$FATALITIES)
+
+remote_civilian <- sum(subset(tigray_war, EVENT_TYPE == "Violence against civilians")$FATALITIES) + sum(subset(tigray_war, EVENT_TYPE == "Explosions/Remote violence" & CIVILIAN_TARGETING == "Civilian targeting")$FATALITIES)
+
+remote_combatant - remote_civilian
 ```
 
-This analysis looks at the effect of event type (Battles, Explosions/Remote Violence, Protests, Riots, Strategic Developments, Civilian Violence) and year of the conflict (2020-2023) on the number of fatalities. Sub-events categorized as Civilian Violence include attacks, sexual violence, and abductions/forced disappearances. This analysis includes data from 4,901 events between the start of the Tigray War on November 3, 2020 and September 21, 2023. This data was collected by the Armed Conflict Location & Event Data (ACLED) project and published by the Ethiopia Peace Observatory.
+**Plot 2: Remote Violence Fatalities in the Tigray War 2020-2023**
 
-A regression of event type on fatalities with “Battles” as the baseline event type shows that violence against civilians has an associated increase in fatalities of 9.09. One would expect roughly 2 more people to die in a given event targeting civilians than in a battle. The standard error is 0.5926, and these results are statistically significant.
-## Add interpretation of year and admin1
+The plot below summarizes fatalities from remote violence during and after the Tigray War from 2020 - 2023. 
 
-## Data visualization
+```{r}
+tigray_remote_plot <- tigray_war |>
+  filter(EVENT_TYPE == "Explosions/Remote violence") |>
+  mutate(remote_fatalities = sum(FATALITIES)) |>
+  filter(CIVILIAN_TARGETING == "Civilian targeting") |>
+  mutate(remote_civilian_fatalities = sum(FATALITIES)) |>
+  ggplot() +
+  geom_col(
+    mapping = aes(x = YEAR, 
+                  y = remote_fatalities, 
+                  fill = 'Total fatalities from remote violence')) +
+  geom_col(
+    mapping = aes(x = YEAR, 
+                  y = remote_civilian_fatalities, 
+                  fill = 'Civilian fatalities from remote violence')) +
+  scale_fill_manual(name = 'Fatalities',
+                    values = c('Total fatalities from remote violence' 
+                               = 'steelblue', 
+                               'Civilian fatalities from remote violence' 
+                               = 'indianred1')) +
+  labs(
+    x = "Year",
+    y = "Number of fatalities",
+    title = "Remote Violence Fatalities in the Tigray War 2020-2023")
+tigray_remote_plot
+```
+
+**Plot 3: Civilian Fatalities in the Tigray War 2020-2022**
+
+Although ACLED does not provide gender-disaggregated fatality data for Ethiopia, its data set does indicate when a violent event specifically targeted women (without doing the same for violence that targeted men, an example in and of itself of the general tendency to overlook male victimization). The plot below visualizes the proportion of violence against civilians that specifically targeted women compared to the total violence against civilians over the course of the conflict. The sub-events categorized as Civilian Violence in this dataset include attacks, sexual violence, and abductions/forced disappearances.
+
+This visualization supports H3: the proportion of lethal violence that specifically targeted women will not constitute the majority of lethal violence against civilians, contrary to the popular conception and media representation of women as the primary victims of war in general and of the Tigray War in particular. However, without gender-disaggregated fatality data, is it impossible to conclude whether more male or more female civilians died as a result of the conflict.  
 
 ```{r}
 civilian_violence <- ethiopia |>
   filter(
     CIVILIAN_TARGETING == "Civilian targeting", 
     EVENT_DATE >= "2020-11-03",
-    ADMIN1 == "Tigray" | (ADMIN1 == "Afar" & ACTOR1 == "TPLF: Tigray People's Liberation Front") | (ADMIN1 == "Amhara" & ACTOR1 == "TPLF: Tigray People's Liberation Front")) |>
+    ADMIN1 == "Tigray" | 
+      (ADMIN1 == "Afar" & 
+         ACTOR1 == "TPLF: Tigray People's Liberation Front") |
+      (ADMIN1 == "Amhara" & 
+         ACTOR1 == "TPLF: Tigray People's Liberation Front")) |>
   mutate(
     WOMEN = ifelse(grepl("Women", ASSOC_ACTOR_2) == TRUE, 1, 0),
     month = format(as.Date(EVENT_DATE, "%Y-%m-%d"), "%Y-%m"),
@@ -89,25 +153,165 @@ civilian_violence_plot <- civilian_violence |>
   mutate(women_fatalities_per_month = sum(FATALITIES)) |>
   ggplot() +
   facet_grid(~year, scales="free", space = "free_x", switch = "x") +
-  geom_col(mapping = aes(x = month, y = fatalities_per_month, fill = 'Fatalities from violence targeting civilians')) +
-  geom_col(mapping = aes(x = month, y = women_fatalities_per_month, fill = 'Fatalities from violence targeting women')) +
+  geom_col(mapping = aes(x = month, 
+                         y = fatalities_per_month, 
+                         fill = 'Fatalities from violence against civilians'))+
+  geom_col(mapping = aes(x = month, 
+                         y = women_fatalities_per_month, 
+                         fill = 'Fatalities from violence against women')) +
   theme(axis.text.x = element_blank(), 
-        panel.spacing = unit(0.05, "lines"),
+        panel.spacing = unit(0, "lines"),
         strip.placement = "outside") +
   labs(
     x = "Year",
     y = "Fatalities per Month",
-    title = "Civilian Casualities in the Tigray War from November 2020 to Present"
-    ) +
+    title = "Civilian Fatalities in the Tigray War 2020-2022") +
   scale_fill_manual(name = 'Fatalities',
-                     values = c('Fatalities from violence targeting civilians'='darkslateblue', 'Fatalities from violence targeting women'= 'pink'))
+                    values = c('Fatalities from violence against civilians'
+                               = 'steelblue', 
+                               'Fatalities from violence against women' 
+                               = 'indianred1'))
 civilian_violence_plot
 ```
 
+## Results 
+
+**Regression Analysis**
+
+The analysis below looks at the effect of event type on the number of fatalities. I controlled for region (Afar, Amhara, Tigray) and the year of the conflict (2020 - 2023). I did not run an analysis on civilian violence that specifically targeted women because, as illustrated by Plot 2, the sample size was too small to yield statistically significant results.
+
+```{r}
+model1 <- lm(FATALITIES ~ EVENT_TYPE + YEAR + ADMIN1, data = tigray_war)
+
+stargazer(model1, 
+          title = "Event Type's Effect on Fatality Count", 
+          type = "text",
+          report = ('vc*sp'),
+          covariate.labels = c("Explosions/Remote Violence", "Protests",
+                               "Riots","Strategic Developments",
+                               "Violence Against Civilians",
+                               "Year", "Amhara", "Tigray"),
+          dep.var.labels = "Fatalities")
+```
+
+A regression of event type on fatalities with “Battles” as the baseline event type shows that remote violence has an associated increase in fatalities of 4.58 and violence against civilians has an associated increase in fatalities of 9.09. Therefore, one would expect roughly 5 more people to die in a given event of remote violence and roughly 9 more people to die in a given event targeting civilians than in a battle. The standard error for remote violence is 1.981 and the p-value is 0.021. With an $\alpha$ of 0.05, these results are statistically significant. The standard error for civilian violence is 0.5926, and the p-value is 0.00. With an $\alpha$ of 0.01, these results are statistically significant. These results support H2: events of violence against civilians will be associated with the highest fatality rate.
+
+The results for Protests, Riots, and Strategic Developments have p-values greater than 0.1, and therefore are not statistically significant. This was expected due to the extremely low number of fatalities from each of these event types. The main coefficient of interest in this analysis was violence against civilians. This coefficient is statistically significant. However, this coefficient does not represent a causal effect. There is an associated, rather than a causal, increase in fatalities when violent events are characterized as violence against civilians.
+
+**Plot 4: Tigray War Fatalities by Year and Event Type**
+
+The plot below depicts events of lethal violence by year and event type. I removed two outliers: a battle with approximately 360 fatalities and an event of violence against civilians with 600 fatalities. I used geom_jitter() to display more data points. The concentration of points at and between y = 0 and y = 10 illustrates that 0 and 10 fatalities were the most common reported fatality count, and that the majority of violent events had 10 fatalities or fewer. At and above y = 50, there are more events coded as violence against civilians than battles or remote violence. This illustrates that violence against civilians tended to be associated with higher fatality counts than other types of violence. 
+
+```{r}
+tigray_scatterplot1 <- tigray_war |>
+  filter(
+    EVENT_TYPE == "Battles" | 
+      EVENT_TYPE == "Explosions/Remote violence" | 
+      EVENT_TYPE == "Violence against civilians",
+    FATALITIES <= 180) |>
+  ggplot(mapping = aes(x = YEAR, y = (FATALITIES), col = EVENT_TYPE)) + 
+  geom_jitter(width = 0.3, height = 0.3) +
+  labs(
+    x = "Year",
+    y = "Number of fatalities",
+    title = "Tigray War Fatalities by Year and Event Type") +
+  scale_colour_manual(name = 'Event Type',
+                      values = c('Battles'= 'indianred1', 
+                                 'Explosions/Remote violence'= 'goldenrod1',
+                                 'Violence against civilians' = 'steelblue3')) 
+tigray_scatterplot1
+```
+
+**Plot 5: Tigray War Fatalities by Event Type 2020-2023**
+
+The plot condenses events of lethal violence over the 2020-2023 period and separates them by event type. I removed two outliers: a battle with approximately 360 fatalities and an event of violence against civilians with 600 fatalities. I used geom_jitter() to display more data points. This plot displays more clearly the association between civilian violence and higher fatality rates, with crossbars indicating the mean number of fatalities for each event type. 
+
+```{r}
+tigray_summary <- tigray_war |> 
+  filter(
+    EVENT_TYPE == "Battles" | 
+      EVENT_TYPE == "Explosions/Remote violence" | 
+      EVENT_TYPE == "Violence against civilians",
+    FATALITIES <= 50) |> 
+  group_by(EVENT_TYPE) |> 
+  summarise(FATALITIES = mean(FATALITIES, na.rm = TRUE))
+
+tigray_scatterplot2 <- tigray_war |>
+  filter(
+    EVENT_TYPE == "Battles" | 
+      EVENT_TYPE == "Explosions/Remote violence" | 
+      EVENT_TYPE == "Violence against civilians",
+    FATALITIES <= 180) |>
+  ggplot(mapping = aes(x = EVENT_TYPE, y = FATALITIES, col = EVENT_TYPE)) +
+  geom_jitter(width = 0.3, height = 0.3) +
+  geom_crossbar(
+    data = tigray_summary, 
+    aes(ymin = FATALITIES, ymax = FATALITIES), 
+    size = 0.3, col = "black", width = .5) +
+  labs(
+    x = "Event Type",
+    y = "Number of fatalities",
+    title = "Tigray War Fatalities by Event Type 2020-2023") +
+  scale_colour_manual(name = 'Event Type',
+                      labels = c('Battles', 'Remote violence', 
+                                 'Violence against civilians'),
+                      values = c('Battles'='indianred1', 
+                                 'Explosions/Remote violence'='goldenrod1',
+                                 'Violence against civilians'='steelblue3')) +
+  scale_x_discrete(labels=c("Explosions/Remote violence" = "Remote violence"))
+tigray_scatterplot2
+```
 
 ## Conclusion
 
-The war in Tigray saw war crimes and crimes against humanity, including deliberate starvation, torture, ethnic cleansing, extra-judicial killings, and sexual violence (Green). Despite the cessation of hostilities in November 2022, the violence and suffering in the Tigray region continue today. With respect to these staggering statistics, the aid and attention from the rest of the world have been dramatically insufficient. There is a dire need for humanitarian assistance and post-conflict reconstruction. The international community has the obligation to respond.
+**Support for my Hypotheses**
 
+In the above analyses and visualizations, I found support for H2 and H3. Further analysis is necessary to accept or reject H1. 
 
+My first research question was: Did civilian casualties constitute the majority of fatalities in the Tigray War? In H1, I hypothesized that the proportion of civilian fatalities would be significantly higher than the proportion of combatant fatalities. In Plot 1 and Plot 2, I illustrate that although battles had the highest number of fatalities, the combined civilian fatalities from explosions/remote violence and violence against civilians was greater than the total number of combatant fatalities. However, this difference is not significant given the scale of civilian and combatant fatalities in the Tigray War. More extensive fatality data is necessary to answer accept or reject hypothesis. 
 
+My second research question was: Which kind of violence from this conflict is associated with the highest fatality rate? In H2, I hypothesized that violence against civilians would be associated with the highest fatality rate. My regression analysis illustrates that events of civilian violence have an associated increase of approximately 9 fatalities compared to battles. Plot 4 and Plot 5 illustrate the higher fatality rate associated with violence against civilians. These results support my second hypothesis. 
+
+My third research question was: Did the majority of lethal violence against civilians in the Tigray War target women? I hypothesized that, contrary to the popular conception and media representation of women as the primary victims of war in general and of the Tigray War in particular, the proportion of lethal violence that specifically targeted women would not constitute the majority of lethal violence against civilians. Plot 3 illustrates that civilian violence specifically targeting women constituted the minority of events coded as violence against civilians in the ACLED dataset. These results provide initial support for my third hypothesis. However, the number of events targeting women was too small to perform further statistical analysis. 
+
+**Limitations**
+
+I faced substantial limitations in my analysis. First, although the ACLED dataset is the most comprehensive available data, it only reflects a fraction of the events and fatalities during the Tigray War. In addition to substantial challenges to obtaining data from Ethiopia and the Tigray region in particular, ACLED researchers present the most conservative estimates ("Tigray Conflict Coding Methodology"). Therefore, the fatality statistics in the analyses above are drastic underestimates. 
+
+Second, this data set is not gender-disaggregated. While I used the mention of women as secondary associated actors as a proxy for all violence targeting women, it is impossible to know how many women are included in fatalities from violence against civilians or remote violence that did not specifically target women. Conversely, this dataset does not note when violence specifically targeted male civillians. Numerous reports of extrajudicial killings and summary executions targeting men have emerged from the Tigray region. However, from this dataset, it is impossible to know how many men are included in fatatlities from violence against civilians or remote violence. 
+
+To improve this analysis, I would need more comprehensive fatality data representing a greater proportion of the estimated 50,000 - 100,000 civilian fatalities from violence in the Tigray War. I would also need this data to be disaggregated by gender in order to answer further research questions on the gendered nature of civilian victimization in this context. 
+
+**Conclusions** 
+
+Ultimately, the results of this project emphasize the devastating statistics of civilian victimization in the Tigray War. Based on ACLED's, the conflict killed more civilians than combatants due to violence alone, not including the hundreds of thousands of civilian deaths due to the conflicts humanitarian consequences, such as famine and lack of access to healthcare. 
+
+The war in Tigray saw war crimes and crimes against humanity, including deliberate starvation, torture, ethnic cleansing, extra-judicial killings, and sexual violence (Green). Despite the cessation of hostilities in November 2022, the violence and suffering in the Tigray region continue today. With respect to the staggering statistics on civilian victimization, the aid and attention from the rest of the world have been dramatically insufficient. There is a dire need for humanitarian assistance and post-conflict reconstruction. The international community has the obligation to respond.
+
+## Works cited
+
+"ACLED Codebook." *ACLED*, 2023, https://acleddata.com/acleddatanew/wp-content/uploads/dlm_uploads/2023/06/ACLED_Codebook_2023.pdf.
+
+Carpenter, R. Charli. "Recognizing gender-based violence against civilian men and boys in conflict situations." *Security Dialogue* 37.1 (2006): 83-103.
+
+Carpenter, R. Charli. "'Women, children and other vulnerable groups': Gender, strategic frames and the protection of civilians as a transnational issue." *International Studies Quarterly* 49.2 (2005): 295-334.
+
+Carpenter, R. Charli. "‘Women and children first’: Gender, norms, and humanitarian evacuation in the Balkans 1991–95." *International Organization* 57.4 (2003): 661-694.
+
+Cohen, Dara Kay, and Ragnhild Nordås. "Sexual violence in armed conflict: Introducing the SVAC dataset, 1989–2009." *Journal of Peace Research* 51.3 (2014): 418-428.
+
+"EPO Sourcing Methodology." Ethiopia Peace Observatory, *ACLED*, Apr. 2021, https://epo.acleddata.com/methodology/. 
+
+Green, Mark A. “Ukraine Understandably in Focus, But Ethiopia’s Tigray Conflict is World’s Largest.” Stubborn Things, *Wilson Center*, 25 Oct. 2022, https://www.wilsoncenter.org/blog-post/ukraine-understandably-focus-ethiopias-tigray-conflict-worlds-largest.
+
+Goldstein, Joshua S. *Winning the war on war: The decline of armed conflict worldwide*. Penguin, 2012.
+
+Janowski, Krzysztof. "Civilian Deaths In Ukraine War Top 10,000, UN Says." United Nations Ukraine, *United Nations*, 21 Nov. 2023, https://ukraine.un.org/en/253322-civilian-deaths-ukraine-war-top-10000-un-says. 
+
+Ormhaug, Christin, Patrick Meier, and Helga Hernes. "Armed conflict deaths disaggregated by gender." *PRIO Paper* 23 (2009).
+
+Plümper, Thomas, and Eric Neumayer. "The unequal burden of war: The effect of armed conflict on the gender gap in life expectancy." *International Organization* 60.3 (2006): 723-754.
+
+Raleigh, Clionadh. "Violence against civilians: A disaggregated analysis." *International Interactions* 38.4 (2012): 462-481.
+
+"Tigray Conflict Coding Methodology." Ethiopia Peace Observatory, *ACLED*, Apr. 2021, https://epo.acleddata.com/methodology/. 
