@@ -76,7 +76,7 @@ tigray_barplot <- tigray_war |>
   labs(
     x = "Event Type",
     y = "Number of fatalities",
-    title = "Tigray War Fatalities by Type of Violence") +
+    title = "Tigray War Fatalities by Type of Violence 2020-2023") +
   scale_x_discrete(labels=c("Explosions/Remote violence" = "Remote violence",
                             "Strategic developments" = "Developments",
                             "Violence against civilians" = 
@@ -223,7 +223,7 @@ tigray_scatterplot1 <- tigray_war |>
   labs(
     x = "Year",
     y = "Number of fatalities",
-    title = "Tigray War Fatalities by Year and Event Type") +
+    title = "Tigray War Fatalities by Year and Event Type 2020-2023") +
   scale_colour_manual(name = 'Event Type',
                       values = c('Battles'= 'indianred1', 
                                  'Explosions/Remote violence'= 'goldenrod1',
