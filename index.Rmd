@@ -1,7 +1,7 @@
 ---
-title: "Gov 50 Final Project"
+title: "The War in Tigray"
 author: "Rebecca Buehler"
-description: "An Analysis of Fatalities in the Tigray War (2020 - 2023)"
+description: "An Analysis of Fatalities from 'the World's Largest Conflict'"
 output:
   distill::distill_article:
     self_contained: false
