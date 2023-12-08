@@ -87,9 +87,17 @@ Plot 1 indicates that battles had a higher number of fatalities than violence ag
 To determine whether civilians constituted the majority of fatalities in the Tigray War, I filtered the fatalities from explosions and remote violence by the "CIVILIAN_TARGETING" variable. I then found the difference between the total combatant fatalities and the total civilian fatalities from remote violence. This difference is -81, indicating that 81 more civilians died due to to violence against civilians and remote violence than combatants died due to battles and remote violence. In the scheme of 50,000 - 100,000 civilians killed in the conflict, this difference is not significant and not necessarily reflective of total fatalities. Therefore, I reject H1: The proportion of civilian fatalities will be significantly higher than the proportion of combatant fatalities.
 
 ```{r}
-remote_combatant <- sum(subset(tigray_war, EVENT_TYPE == "Battles" | EVENT_TYPE == "Explosions/Remote violence")$FATALITIES) - sum(subset(tigray_war, EVENT_TYPE == "Explosions/Remote violence" & CIVILIAN_TARGETING == "Civilian targeting")$FATALITIES)
+remote_combatant <- 
+  sum(subset(tigray_war, EVENT_TYPE == "Battles" | 
+               EVENT_TYPE == "Explosions/Remote violence")$FATALITIES) - 
+  sum(subset(tigray_war, EVENT_TYPE == "Explosions/Remote violence" & 
+               CIVILIAN_TARGETING == "Civilian targeting")$FATALITIES)
 
-remote_civilian <- sum(subset(tigray_war, EVENT_TYPE == "Violence against civilians")$FATALITIES) + sum(subset(tigray_war, EVENT_TYPE == "Explosions/Remote violence" & CIVILIAN_TARGETING == "Civilian targeting")$FATALITIES)
+remote_civilian <- 
+  sum(subset(tigray_war, 
+             EVENT_TYPE == "Violence against civilians")$FATALITIES) +
+  sum(subset(tigray_war, EVENT_TYPE == "Explosions/Remote violence" & 
+               CIVILIAN_TARGETING == "Civilian targeting")$FATALITIES)
 
 remote_combatant - remote_civilian
 ```
