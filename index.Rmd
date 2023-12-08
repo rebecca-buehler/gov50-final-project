@@ -54,7 +54,7 @@ I obtained ACLED data from the Ethiopia Peace Observatory, a special project lau
 
 In order to limit this dataset to exclusively reflect violent events related to the Tigray War, I filtered the data by date, region, and actors involved. The analysis below includes data from events between the start of the Tigray War on November 3, 2020 and the last entry on September 21, 2023. I further limited my analysis to events that occured in Tigray, Afar, and Amhara, the regions where the fighting took place. Although the Tigray War spilled into the Afar and Amhara regions, these regions also saw armed conflict unrelated to the conflict in Tigray. Therefore, I filtered events from Afar and Amhara to only include those in which the Tigray People's Liberation Front, a primary party to the conflict, was involved. 
 
-**Plot 1: Tigray War Fatalities by Type of Violence** 
+**Plot 1: Tigray War Fatalities by Type of Violence 2020-2023** 
 
 The plot below summarizes fatalities across all violent event types during and after the Tigray War (2020-2023). 
 
@@ -207,7 +207,7 @@ A regression of event type on fatalities with “Battles” as the baseline even
 
 The results for Protests, Riots, and Strategic Developments have p-values greater than 0.1, and therefore are not statistically significant. This was expected due to the extremely low number of fatalities from each of these event types. The main coefficient of interest in this analysis was violence against civilians. This coefficient is statistically significant. However, this coefficient does not represent a causal effect. There is an associated, rather than a causal, increase in fatalities when violent events are characterized as violence against civilians.
 
-**Plot 4: Tigray War Fatalities by Year and Event Type**
+**Plot 4: Tigray War Fatalities by Year and Event Type 2020-2023**
 
 The plot below depicts events of lethal violence by year and event type. I removed two outliers: a battle with approximately 360 fatalities and an event of violence against civilians with 600 fatalities. I used geom_jitter() to display more data points. The concentration of points at and between y = 0 and y = 10 illustrates that 0 and 10 fatalities were the most common reported fatality count, and that the majority of violent events had 10 fatalities or fewer. At and above y = 50, there are more events coded as violence against civilians than battles or remote violence. This illustrates that violence against civilians tended to be associated with higher fatality counts than other types of violence. 
 
